@@ -3,6 +3,8 @@ package Selenium;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -51,6 +53,27 @@ public class MyTest {
 	  String expected = "All fields marked with * must be filled in. Please specify: Username, Password, Retype Password, First Name, Last Name, E-mail Address.";
 	  Assert.assertEquals(actual, expected);
 	  Reporter.log(expected,true);	  
+  }
+  
+  @Test(priority=4)
+  public void userguide()
+  {
+	  driver.findElement(By.name("username")).sendKeys("admin");
+	  driver.findElement(By.name("pwd")).sendKeys("manager");
+	  driver.findElement(By.xpath("//a[@id='loginButton']")).click();
+	  driver.findElement(By.xpath("//span[text()='Help & Support']")).click();
+	  driver.findElement(By.xpath("((//div[@id='supportMenu']//tbody)[2]//td/div/div)[1]")).click();
+	  Set<String> windows = driver.getWindowHandles();
+	  Iterator<String> winid = windows.iterator();
+	  String parentid = winid.next();
+	  String childid = winid.next();
+	  driver.switchTo().window(childid);
+	  WebElement value = driver.findElement(By.xpath("((//a[@id='focusLink']/parent::div//tbody//td)[3]//a)[1]"));
+	  String vl = value.getText();
+	  Reporter.log(vl, true);
+	  
+	  
+	  
   }
   @BeforeMethod
   public void beforeMethod() {
